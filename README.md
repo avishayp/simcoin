@@ -1,3 +1,5 @@
+[![CircleCI](https://circleci.com/gh/avishayp/simcoin.svg?style=svg)](https://circleci.com/gh/avishayp/simcoin)
+
 ##  Simcoin - A Blockchain Simulation Framework 🏗️
 Simcoin facilitates realistic simulations of blockchain networks (currently Bitcoin only). The network is virtualised by the simulation software on one single Unix host machine. To be able to spawn multiple peers the CPU-heavy proof-of-work is deactivated. Blocks and transactions are created by sending respective commands over RPC to the nodes according to a pre-configured simulation scenario.
 

@@ -1,0 +1,66 @@
+### =============================================================
+### This configuration file is used by CircleCI build server
+### https://circleci.com/docs/config-sample
+### =============================================================
+
+version: 2
+
+jobs:
+
+  pep:
+    docker:
+      - image: circleci/python:3.6
+
+    steps:
+      - restore_cache:
+          key: v1-venv
+
+      - run:
+          name: create venv
+          command: |
+            python -m venv /tmp/venv
+            . /tmp/venv/bin/activate
+            pip install tox
+
+      - save_cache:
+          key: v1-venv
+          paths:
+            - /tmp/venv
+
+      - checkout
+
+      - restore_cache:
+          key: v1-tox-{{ checksum "code/requirements.txt" }}
+
+      - run:
+          name: enforce pep8
+          command: |
+            . /tmp/venv/bin/activate
+            tox
+
+      - save_cache:
+          key: v1-tox-{{ checksum "code/requirements.txt" }}
+          paths:
+            - .tox
+
+  unittest:
+    docker:
+      - image: circleci/python:3.6
+
+    steps:
+
+      - checkout
+
+      - run: echo TBD
+
+
+workflows:
+  version: 2
+
+  simcoin:
+
+    jobs:
+      - pep
+      - unittest:
+          requires:
+            - pep
