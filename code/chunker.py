@@ -4,9 +4,10 @@ import os
 # http://www.blopig.com/blog/2016/08/processing-large-files-using-python-part-duex/
 class Chunker(object):
 
-    # Iterator that yields start and end locations of a file chunk of default size 1MB.
+    # Iterator that yields start and end locations of a file chunk of default
+    # size 1MB.
     @classmethod
-    def chunkify(cls, file_name, size=1024*1024):
+    def chunkify(cls, file_name, size=1024 * 1024):
         file_end = os.path.getsize(file_name)
         with open(file_name, 'rb') as file:
             chunk_end = file.tell()

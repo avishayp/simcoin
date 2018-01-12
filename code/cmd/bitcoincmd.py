@@ -3,30 +3,30 @@ import config
 
 daemon = 'bitcoind '
 args = {
-    'regtest':            '-regtest',
-    'datadir':            '-datadir=' + config.bitcoin_data_dir,
+    'regtest': '-regtest',
+    'datadir': '-datadir=' + config.bitcoin_data_dir,
 
     # log all events relevant for parsing
-    'debug':              '-debug=cmpctblock -debug=net -debug=mempool',
-    'logips':             '-logips',
-    'logtimemicros':      '-logtimemicros',
+    'debug': '-debug=cmpctblock -debug=net -debug=mempool',
+    'logips': '-logips',
+    'logtimemicros': '-logtimemicros',
 
 
     # activate listen even though explicit -connect will be set
-    'listen':             '-listen=1',
-    'listenonion':        '-listenonion=0',
-    'onlynet':            '-onlynet=ipv4',
-    'dnsseed':            '-dnsseed=0',
+    'listen': '-listen=1',
+    'listenonion': '-listenonion=0',
+    'onlynet': '-onlynet=ipv4',
+    'dnsseed': '-dnsseed=0',
 
-    'reindex':            '-reindex',
-    'checkmempool':       '-checkmempool=0',
-    'keypool':            '-keypool=1',
+    'reindex': '-reindex',
+    'checkmempool': '-checkmempool=0',
+    'keypool': '-keypool=1',
 
     # RPC configuration
-    'rpcuser':            '-rpcuser=admin',
-    'rpcpassword':        '-rpcpassword=admin',
-    'rpcallowip':         '-rpcallowip=1.1.1.1/0.0.0.0',
-    'rpcservertimeout':   '-rpcservertimeout=' + str(config.rpc_timeout),
+    'rpcuser': '-rpcuser=admin',
+    'rpcpassword': '-rpcpassword=admin',
+    'rpcallowip': '-rpcallowip=1.1.1.1/0.0.0.0',
+    'rpcservertimeout': '-rpcservertimeout=' + str(config.rpc_timeout),
 }
 
 
@@ -43,4 +43,5 @@ def transform_to_cmd(args_to_transform):
 
 
 def rm_peers(node):
-    return dockercmd.exec_cmd(node, 'rm -f {}/regtest/peers.dat'.format(config.bitcoin_data_dir))
+    return dockercmd.exec_cmd(
+        node, 'rm -f {}/regtest/peers.dat'.format(config.bitcoin_data_dir))

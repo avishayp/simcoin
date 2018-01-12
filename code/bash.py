@@ -20,4 +20,5 @@ def check_output_without_log(cmd):
 def call_silent(cmd):
     logging.info(cmd)
     with open(os.devnull, 'w') as devnull:
-        return subprocess.call(cmd, shell=True, executable='/bin/bash', stderr=devnull, stdout=devnull)
+        return subprocess.call(
+            cmd, shell=True, executable='/bin/bash', stderr=devnull, stdout=devnull)

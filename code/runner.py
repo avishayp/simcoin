@@ -29,19 +29,22 @@ class Runner:
 
     def run(self):
         try:
-            self._context.step_times.append(StepTimes(time.time(), 'preparation_start'))
+            self._context.step_times.append(
+                StepTimes(time.time(), 'preparation_start'))
             self._prepare.execute()
             logging.info('End of Preparation')
 
             self._system_monitor.start()
-            self._context.step_times.append(StepTimes(time.time(), 'simulation_start'))
+            self._context.step_times.append(
+                StepTimes(time.time(), 'simulation_start'))
             logging.info('Start of simulation')
             self._event.execute()
             logging.info('End of simulation')
 
             self._persist_system_snapshots()
 
-            self._context.step_times.append(StepTimes(time.time(), 'postprocessing_start'))
+            self._context.step_times.append(
+                StepTimes(time.time(), 'postprocessing_start'))
             self._postprocessing.execute()
         except Exception as exce:
             self._postprocessing.clean_up_docker()
@@ -63,7 +66,9 @@ class Runner:
             MemorySnapshot.csv_header,
             memory,
         )
-        logging.info('Persisted {} CPU time and {} memory snapshots'.format(len(cpu_times), len(memory)))
+        logging.info(
+            'Persisted {} CPU time and {} memory snapshots'.format(
+                len(cpu_times), len(memory)))
 
 
 class StepTimes:
@@ -80,7 +85,10 @@ class StepTimes:
 
 
 def _calculate_frequency(tick_duration, amount_of_ticks):
-    frequency = math.ceil(tick_duration * amount_of_ticks / config.amount_of_system_snapshots)
+    frequency = math.ceil(
+        tick_duration *
+        amount_of_ticks /
+        config.amount_of_system_snapshots)
     logging.info('With tick_duration={}, amount_of_ticks={} and amount_of_system_snapshots={}'
                  ' the system monitor needs to take every {}s a snapshot'
                  .format(tick_duration, amount_of_ticks, config.amount_of_system_snapshots, frequency))

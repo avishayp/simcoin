@@ -52,7 +52,8 @@ def _parse(writer, log_file, name, chunk, parsers):
         for parser in parsers:
             try:
                 parsed_object = parser.from_log_line(line, name)
-                parsed_objects.setdefault(parsed_object.file_name, []).append(parsed_object)
+                parsed_objects.setdefault(
+                    parsed_object.file_name, []).append(parsed_object)
                 break
             except ParseException:
                 pass
@@ -125,8 +126,9 @@ class BlockStatsEvent(Event):
     @classmethod
     def from_log_line(cls, line, node):
         match = re.match(
-            config.log_prefix_timestamp + 'CreateNewBlock\(\): total size: ([0-9]+) block weight: [0-9]+ txs: ([0-9]+)'
-                                          ' fees: [0-9]+ sigops [0-9]+$', line)
+            config.log_prefix_timestamp +
+            'CreateNewBlock\(\): total size: ([0-9]+) block weight: [0-9]+ txs: ([0-9]+)'
+            ' fees: [0-9]+ sigops [0-9]+$', line)
 
         if match is None:
             raise ParseException("Didn't match 'CreateNewBlock' log line.")
@@ -158,10 +160,11 @@ class UpdateTipEvent(Event):
     @classmethod
     def from_log_line(cls, line, node):
         match = re.match(
-            config.log_prefix_timestamp + 'UpdateTip: new best=([0-9,a-z]{64}) height=([0-9]+) version=0x[0-9]{8}'
-                                          ' log2_work=[0-9]+\.?[0-9]* tx=([0-9]+)'
-                                          ' date=\'[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}\''
-                                          ' progress=[0-9]+.[0-9]+ cache=[0-9]+\.[0-9]+[a-zA-Z]+\([0-9]+txo?\)$', line)
+            config.log_prefix_timestamp +
+            'UpdateTip: new best=([0-9,a-z]{64}) height=([0-9]+) version=0x[0-9]{8}'
+            ' log2_work=[0-9]+\.?[0-9]* tx=([0-9]+)'
+            ' date=\'[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}\''
+            ' progress=[0-9]+.[0-9]+ cache=[0-9]+\.[0-9]+[a-zA-Z]+\([0-9]+txo?\)$', line)
 
         if match is None:
             raise ParseException("Didn't match 'UpdateTip' log line.")
@@ -192,11 +195,13 @@ class PeerLogicValidationEvent(Event):
     @classmethod
     def from_log_line(cls, line, node):
         match = re.match(
-            config.log_prefix_timestamp + 'PeerLogicValidation::NewPoWValidBlock sending header-and-ids ([a-z0-9]{64}) '
-                                          'to peer=[0-9]+', line)
+            config.log_prefix_timestamp +
+            'PeerLogicValidation::NewPoWValidBlock sending header-and-ids ([a-z0-9]{64}) '
+            'to peer=[0-9]+', line)
 
         if match is None:
-            raise ParseException("Didn't match 'PeerLogicValidation' log line.")
+            raise ParseException(
+                "Didn't match 'PeerLogicValidation' log line.")
 
         return cls(
             _parse_datetime(match.group(1)),
@@ -221,7 +226,10 @@ class TxEvent(Event):
 
     @classmethod
     def from_log_line(cls, line, node):
-        match = re.match(config.log_prefix_timestamp + 'AddToWallet ([a-z0-9]{64})  new$', line)
+        match = re.match(
+            config.log_prefix_timestamp +
+            'AddToWallet ([a-z0-9]{64})  new$',
+            line)
 
         if match is None:
             raise ParseException("Didn't match 'AddToWallet' log line.")
@@ -237,12 +245,29 @@ class TxEvent(Event):
 
 
 class TickEvent:
-    __slots__ = ['_timestamp', '_source', '_number', '_planned_start', '_actual_start', '_duration', '_txs', '_blocks']
+    __slots__ = [
+        '_timestamp',
+        '_source',
+        '_number',
+        '_planned_start',
+        '_actual_start',
+        '_duration',
+        '_txs',
+        '_blocks']
 
-    csv_header = ['timestamp', 'source', 'number', 'planned_start', 'actual_start', 'duration', 'txs', 'blocks']
+    csv_header = [
+        'timestamp',
+        'source',
+        'number',
+        'planned_start',
+        'actual_start',
+        'duration',
+        'txs',
+        'blocks']
     file_name = 'tick_infos.csv'
 
-    def __init__(self, timestamp, source, number, planned_start, actual_start, duration, txs, blocks):
+    def __init__(self, timestamp, source, number, planned_start,
+                 actual_start, duration, txs, blocks):
         self._timestamp = timestamp
         self._source = source
         self._number = number
@@ -255,9 +280,10 @@ class TickEvent:
     @classmethod
     def from_log_line(cls, line, source):
         match = re.match(
-            config.log_prefix_timestamp + '\[.*\] \[.*\]  Tick=([0-9]+) with planned_start=([0-9]+\.[0-9]+),'
-                                          ' actual_start=([0-9]+\.[0-9]+) and duration=([0-9]+\.[0-9]+),'
-                                          ' created txs=([0-9]+) and blocks=([0-9]+)$', line)
+            config.log_prefix_timestamp +
+            '\[.*\] \[.*\]  Tick=([0-9]+) with planned_start=([0-9]+\.[0-9]+),'
+            ' actual_start=([0-9]+\.[0-9]+) and duration=([0-9]+\.[0-9]+),'
+            ' created txs=([0-9]+) and blocks=([0-9]+)$', line)
         if match is None:
             raise ParseException("Didn't match 'Tick' log line.")
 
@@ -294,7 +320,8 @@ class BlockReceivedEvent(ReceivedEvent):
 
     @classmethod
     def from_log_line(cls, line, node):
-        match = re.match(config.log_prefix_timestamp + 'received block ([a-z0-9]{64}) peer=[0-9]+$', line)
+        match = re.match(config.log_prefix_timestamp +
+                         'received block ([a-z0-9]{64}) peer=[0-9]+$', line)
 
         if match is None:
             raise ParseException("Didn't match 'Received block' log line.")
@@ -313,11 +340,13 @@ class BlockReconstructEvent(ReceivedEvent):
     @classmethod
     def from_log_line(cls, line, node):
         match = re.match(
-            config.log_prefix_timestamp + 'Successfully reconstructed block ([a-z0-9]{64}) with ([0-9]+) txn prefilled,'
-                                          ' ([0-9]+) txn from mempool \(incl at least ([0-9]+) from extra pool\) and'
-                                          ' [0-9]+ txn requested$', line)
+            config.log_prefix_timestamp +
+            'Successfully reconstructed block ([a-z0-9]{64}) with ([0-9]+) txn prefilled,'
+            ' ([0-9]+) txn from mempool \(incl at least ([0-9]+) from extra pool\) and'
+            ' [0-9]+ txn requested$', line)
         if match is None:
-            raise ParseException("Didn't match 'Reconstructed block' log line.")
+            raise ParseException(
+                "Didn't match 'Reconstructed block' log line.")
 
         return cls(
             _parse_datetime(match.group(1)),
@@ -401,12 +430,20 @@ class TxExceptionEvent(ExceptionEvent):
 
 
 class RPCExceptionEvent(Event):
-    __slots__ = ['_timestamp', '_node', '_source', '_method', '_exception', '_retries_left']
+    __slots__ = [
+        '_timestamp',
+        '_node',
+        '_source',
+        '_method',
+        '_exception',
+        '_retries_left']
 
-    csv_header = Event.csv_header + ['source', 'method', 'exception', 'retries_left']
+    csv_header = Event.csv_header + ['source',
+                                     'method', 'exception', 'retries_left']
     file_name = 'rpc_exceptions.csv'
 
-    def __init__(self, timestamp, node, source, method, exception, retries_left):
+    def __init__(self, timestamp, node, source,
+                 method, exception, retries_left):
         super().__init__(timestamp, node)
         self._source = source
         self._method = method
@@ -432,7 +469,8 @@ class RPCExceptionEvent(Event):
         )
 
     def vars_to_array(self):
-        return Event.vars_to_array(self) + [self._source, self._method, self._exception, self._retries_left]
+        return Event.vars_to_array(
+            self) + [self._source, self._method, self._exception, self._retries_left]
 
 
 class ParseException(Exception):

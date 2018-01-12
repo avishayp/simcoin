@@ -33,7 +33,8 @@ class TestNode(TestCase):
         chain_1 = self.node._tx_chains[0]
         self.assertEqual(chain_1.current_unspent_tx, 'tx_hash_1')
         self.assertEqual(chain_1.address, 'address_hash_1')
-        self.assertEqual(chain_1.seckey,  CBitcoinSecret('cTCrrgVLfBqEZ1dxmCnEwmiEWzeZHU8uw3CNvLVvbT4CrBeDdTqc'))
+        self.assertEqual(chain_1.seckey, CBitcoinSecret(
+            'cTCrrgVLfBqEZ1dxmCnEwmiEWzeZHU8uw3CNvLVvbT4CrBeDdTqc'))
         self.assertEqual(chain_1.amount, 5000000000)
 
         chain_2 = self.node._tx_chains[1]

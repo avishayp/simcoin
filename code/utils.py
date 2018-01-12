@@ -60,7 +60,9 @@ def read_csv(file_name):
                     objects.append(Object._make(line))
                 return objects
             except StopIteration:
-                logging.debug('File={} has not enough lines'.format(config.args_csv))
+                logging.debug(
+                    'File={} has not enough lines'.format(
+                        config.args_csv))
                 return []
     else:
         return []

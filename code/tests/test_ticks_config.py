@@ -35,7 +35,8 @@ class TestTicksConfig(TestCase):
         nodes = [node_0, node_1]
         block_events = {'node-0': [0.5, 2.1, end], 'node-1': [0.5, 2.1, end]}
 
-        event_ticks = ticks_config._create_ticks(nodes, block_events, txs_per_tick, end)
+        event_ticks = ticks_config._create_ticks(
+            nodes, block_events, txs_per_tick, end)
 
         self.assertEqual(len(event_ticks), 4)
         self.assertEqual(len(event_ticks[0]), 4)
@@ -64,13 +65,27 @@ class TestTicksConfig(TestCase):
         self.assertEqual(len(block_events), 10)
 
     @patch('simulationfiles.ticks_config._calc_expected_events', lambda a, b: 5)
-    @patch('simulationfiles.ticks_config._create_block_series', lambda a, b, c: [10, 11, 9])
+    @patch('simulationfiles.ticks_config._create_block_series',
+           lambda a, b, c: [10, 11, 9])
     def test_create_block_events(self):
-        nodes = [NodeConfig('group', 'node-0', 0.5, 0, None), NodeConfig('group', 'node-1', 0.5, 0, None)]
+        nodes = [
+            NodeConfig(
+                'group',
+                'node-0',
+                0.5,
+                0,
+                None),
+            NodeConfig(
+                'group',
+                'node-1',
+                0.5,
+                0,
+                None)]
         amount_of_ticks = 10
         blocks_per_tick = .5
 
-        block_events = ticks_config._create_block_events(nodes, amount_of_ticks, blocks_per_tick)
+        block_events = ticks_config._create_block_events(
+            nodes, amount_of_ticks, blocks_per_tick)
         self.assertEqual(len(block_events), 2)
         for block_events in block_events.values():
             self.assertEqual(block_events, [10, 11, 9])

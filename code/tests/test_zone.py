@@ -14,7 +14,9 @@ class TestZone(TestCase):
 
         self.assertEqual(ip, ipaddress.IPv4Address('240.1.0.1'))
         self.assertEqual(self.zone.zones[100].latency, 100)
-        self.assertEqual(self.zone.zones[100].network, ipaddress.ip_network('240.1.0.0/16'))
+        self.assertEqual(
+            self.zone.zones[100].network,
+            ipaddress.ip_network('240.1.0.0/16'))
 
     def test_get_ip_second_time_same_latency(self):
 

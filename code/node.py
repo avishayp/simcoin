@@ -41,7 +41,12 @@ class Node:
 
 
 class BitcoinNode(Node):
-    __slots__ = ['_path', '_spent_to', '_rpc_connection', '_current_tx_chain_index', '_tx_chains']
+    __slots__ = [
+        '_path',
+        '_spent_to',
+        '_rpc_connection',
+        '_current_tx_chain_index',
+        '_tx_chains']
 
     def __init__(self, name, group, ip, docker_image, path):
         super().__init__(name, group, ip, docker_image)
@@ -60,7 +65,10 @@ class BitcoinNode(Node):
             file.write('rpcpassword={}\n'.format(config.rpc_password))
 
     def run(self, connect_to_ips):
-        bash.check_output(bitcoincmd.start(self._name, str(self._ip), self._docker_image, self._path, connect_to_ips))
+        bash.check_output(
+            bitcoincmd.start(
+                self._name, str(
+                    self._ip), self._docker_image, self._path, connect_to_ips))
 
     def is_running(self):
         return bash.check_output(
@@ -72,7 +80,9 @@ class BitcoinNode(Node):
     def close_rpc_connection(self):
         if self._rpc_connection is not None:
             self._rpc_connection.__dict__['_BaseProxy__conn'].close()
-            logging.debug('Closed rpc connection to node={}'.format(self._name))
+            logging.debug(
+                'Closed rpc connection to node={}'.format(
+                    self._name))
 
     def stop(self):
         self.execute_rpc('stop')
@@ -97,7 +107,9 @@ class BitcoinNode(Node):
                 self.execute_rpc('getnetworkinfo')
                 break
             except JSONRPCError:
-                logging.debug('Waiting until RPC of node={} is ready.'.format(self._name))
+                logging.debug(
+                    'Waiting until RPC of node={} is ready.'.format(
+                        self._name))
                 utils.sleep(1)
 
     def connect_to_rpc(self):
@@ -117,10 +129,11 @@ class BitcoinNode(Node):
             except (IOError, CannotSendRequest) as error:
                 logging.exception('Could not execute RPC-call={} on node={} because of error={}.'
                                   ' Reconnecting and retrying, {} retries left'
-                                  .format(args[0], self._name,  error, retry))
+                                  .format(args[0], self._name, error, retry))
                 retry -= 1
                 self.connect_to_rpc()
-        raise Exception('Could not execute RPC-call={} on node {}'.format(args[0], self._name))
+        raise Exception(
+            'Could not execute RPC-call={} on node {}'.format(args[0], self._name))
 
     def transfer_coinbases_to_normal_tx(self):
         for tx_chain in self._tx_chains:
@@ -148,7 +161,9 @@ class BitcoinNode(Node):
     def generate_blocks(self, amount=1):
         logging.debug('{} trying to generate block'.format(self._name))
         block_hash = self.execute_rpc('generate', amount)
-        logging.info('{} generated block with hash={}'.format(self._name, block_hash))
+        logging.info(
+            '{} generated block with hash={}'.format(
+                self._name, block_hash))
 
     def generate_tx(self):
         tx_chain = self.get_next_tx_chain()
@@ -320,7 +335,8 @@ def transfer_coinbase_tx_to_normal_tx(node):
     node.generate_spent_to_address()
     node.create_tx_chains()
     node.transfer_coinbases_to_normal_tx()
-    logging.info("Transferred all coinbase-tx to normal tx for node={}".format(node.name))
+    logging.info(
+        "Transferred all coinbase-tx to normal tx for node={}".format(node.name))
 
 
 def add_latency(node, zones):

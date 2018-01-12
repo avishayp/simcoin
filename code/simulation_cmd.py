@@ -16,16 +16,14 @@ from simulationfiles import checkargs
 def _create_parser():
     parser = argparse.ArgumentParser()
 
-    parser.add_argument('--skip-ticks'
-                        , type=checkargs.check_positive_int
-                        , default=0
-                        , help='Amount of ticks skipped for analysis at the beginning and at the end of the simulation'
+    parser.add_argument('--skip-ticks', type=checkargs.check_positive_int, default=0, help='Amount of ticks skipped for analysis at the beginning and at the end of the simulation'
                         )
 
-    parser.add_argument('--tick-duration'
-                        , default=1
-                        , type=checkargs.check_positive_float
-                        , help='Duration of ticks.')
+    parser.add_argument(
+        '--tick-duration',
+        default=1,
+        type=checkargs.check_positive_float,
+        help='Duration of ticks.')
     return parser
 
 
@@ -66,7 +64,8 @@ def run(unknown_arguments=False):
 
     runner.run()
 
-    logging.info("The duration of the run was {} seconds".format(str(time.time() - start)))
+    logging.info("The duration of the run was {} seconds".format(
+        str(time.time() - start)))
 
 
 def _check_skip_ticks(skip_ticks):

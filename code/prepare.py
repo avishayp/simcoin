@@ -40,16 +40,24 @@ class Prepare:
 
         if os.path.islink(config.soft_link_to_run_dir):
             bash.check_output('unlink {}'.format(config.soft_link_to_run_dir))
-        bash.check_output('cd {}; ln -s {} {}'.format(config.data_dir, self._context.run_name, config.last_run))
+        bash.check_output('cd {}; ln -s {} {}'.format(config.data_dir,
+                                                      self._context.run_name, config.last_run))
         os.makedirs(config.postprocessing_dir)
 
         for file in [config.network_csv_file_name, config.ticks_csv_file_name,
                      config.nodes_csv_file_name, config.args_csv_file_name]:
-            bash.check_output('cp {}{} {}'.format(config.data_dir, file, self._context.run_dir))
-            bash.check_output('cd {}; ln -s ../{} {}'.format(config.postprocessing_dir, file, file))
+            bash.check_output(
+                'cp {}{} {}'.format(
+                    config.data_dir,
+                    file,
+                    self._context.run_dir))
+            bash.check_output(
+                'cd {}; ln -s ../{} {}'.format(config.postprocessing_dir, file, file))
 
         os.makedirs(config.node_config)
-        self._pool.map(node_utils.create_conf_file, self._context.nodes.values())
+        self._pool.map(
+            node_utils.create_conf_file,
+            self._context.nodes.values())
 
         logging.info('Simulation directory created')
 
@@ -60,7 +68,8 @@ class Prepare:
             cbs.append(
                 self._pool.apply_async(
                     node_utils.start_node,
-                    args=(node, (str(node.ip) for node in nodes[max(0, i - 5):i]))
+                    args=(node, (str(node.ip)
+                                 for node in nodes[max(0, i - 5):i]))
                 )
             )
         for cb in cbs:
@@ -73,18 +82,26 @@ class Prepare:
             self._context.args.blocks_per_tick,
             len(nodes)
         )
-        logging.info('Each node receives {} tx-chains'.format(amount_of_tx_chains))
+        logging.info(
+            'Each node receives {} tx-chains'.format(amount_of_tx_chains))
 
         for i, node in enumerate(nodes):
             node_utils.wait_until_height_reached(node, i * amount_of_tx_chains)
             node.execute_rpc('generate', amount_of_tx_chains)
-            logging.info('Generated {} blocks for node={} for their tx-chains'.format(amount_of_tx_chains, node.name))
+            logging.info(
+                'Generated {} blocks for node={} for their tx-chains'.format(
+                    amount_of_tx_chains, node.name))
 
-        node_utils.wait_until_height_reached(nodes[0], amount_of_tx_chains * len(nodes))
-        nodes[0].generate_blocks(config.blocks_needed_to_make_coinbase_spendable)
-        current_height = config.blocks_needed_to_make_coinbase_spendable + amount_of_tx_chains * len(nodes)
+        node_utils.wait_until_height_reached(
+            nodes[0], amount_of_tx_chains * len(nodes))
+        nodes[0].generate_blocks(
+            config.blocks_needed_to_make_coinbase_spendable)
+        current_height = config.blocks_needed_to_make_coinbase_spendable + \
+            amount_of_tx_chains * len(nodes)
 
-        self._pool.starmap(node_utils.wait_until_height_reached, zip(nodes, itertools.repeat(current_height)))
+        self._pool.starmap(
+            node_utils.wait_until_height_reached, zip(
+                nodes, itertools.repeat(current_height)))
 
         self._pool.map(node_utils.transfer_coinbase_tx_to_normal_tx, nodes)
 
@@ -96,8 +113,8 @@ class Prepare:
         self._context.first_block_height = current_height
 
         self._pool.starmap(node_utils.wait_until_height_reached, zip(
-                nodes,
-                itertools.repeat(current_height)
+            nodes,
+            itertools.repeat(current_height)
         ))
 
         self._pool.map(node_utils.rm_peers_file, nodes)
@@ -133,7 +150,8 @@ def _calc_number_of_tx_chains(txs_per_tick, blocks_per_tick, number_of_nodes):
     txs_per_block_per_node = txs_per_block / number_of_nodes
 
     # 10 times + 3 chains in reserve
-    needed_tx_chains = (txs_per_block_per_node / config.max_in_mempool_ancestors) * 10 + 3
+    needed_tx_chains = (txs_per_block_per_node /
+                        config.max_in_mempool_ancestors) * 10 + 3
 
     return math.ceil(needed_tx_chains)
 

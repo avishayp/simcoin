@@ -15,26 +15,22 @@ import run_cmd
 import logging
 
 commands = {
-    'nodes':        nodes_config.create,
-    'network':      network_config.create,
-    'ticks':        ticks_config.create,
-    'simulate':     simulation_cmd.run,
-    'run':          run_cmd.run,
-    'multi-run':    multirun_cmd.run,
+    'nodes': nodes_config.create,
+    'network': network_config.create,
+    'ticks': ticks_config.create,
+    'simulate': simulation_cmd.run,
+    'run': run_cmd.run,
+    'multi-run': multirun_cmd.run,
 }
 
 
 def _parse_args():
     parser = argparse.ArgumentParser()
 
-    parser.add_argument('--verbose'
-                        , action="store_true"
-                        , help='Verbose log.'
+    parser.add_argument('--verbose', action="store_true", help='Verbose log.'
                         )
 
-    parser.add_argument('--tag'
-                        , default='run'
-                        , help='Tag that will be added to every csv file.'
+    parser.add_argument('--tag', default='run', help='Tag that will be added to every csv file.'
                         )
 
     args = parser.parse_known_args(sys.argv[2:])[0]

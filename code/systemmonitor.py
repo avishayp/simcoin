@@ -8,12 +8,15 @@ PRIORITY = 1
 
 
 def run(stop_event, frequency, q_cpu_time, q_memory):
-    logging.info('Starting system monitor with frequency={}s'.format(str(frequency)))
+    logging.info(
+        'Starting system monitor with frequency={}s'.format(
+            str(frequency)))
     scheduler = sched.scheduler(time.time, time.sleep)
     next_execution = time.time()
 
     while not stop_event.wait(0):
-        scheduler.enterabs(next_execution, PRIORITY, _collect, (q_cpu_time, q_memory,))
+        scheduler.enterabs(next_execution, PRIORITY,
+                           _collect, (q_cpu_time, q_memory,))
         scheduler.run()
         next_execution += frequency
 
@@ -41,12 +44,19 @@ class CpuTimeSnapshot:
 
     @classmethod
     def from_bash(cls, cpu_time):
-        cpu_matched = re.match('cpu\s+([0-9]+)\s+([0-9]+)\s+([0-9]+)\s+([0-9]+)', cpu_time)
-        snapshot = cls(time.time(), cpu_matched.group(1), cpu_matched.group(2), cpu_matched.group(3), cpu_matched.group(4))
+        cpu_matched = re.match(
+            'cpu\s+([0-9]+)\s+([0-9]+)\s+([0-9]+)\s+([0-9]+)', cpu_time)
+        snapshot = cls(
+            time.time(),
+            cpu_matched.group(1),
+            cpu_matched.group(2),
+            cpu_matched.group(3),
+            cpu_matched.group(4))
         return snapshot
 
     def vars_to_array(self):
-        return [self._timestamp, self._user, self._nice, self._system, self._idle]
+        return [self._timestamp, self._user,
+                self._nice, self._system, self._idle]
 
 
 class MemorySnapshot:
@@ -62,8 +72,12 @@ class MemorySnapshot:
 
     @classmethod
     def from_bash(cls, memory):
-        memory_matched = re.match('MemTotal:\s+([0-9]+)\s+kB\n.*\nMemAvailable:\s+([0-9]+)\s+kB', memory)
-        snapshot = cls(time.time(), memory_matched.group(1), memory_matched.group(2))
+        memory_matched = re.match(
+            'MemTotal:\s+([0-9]+)\s+kB\n.*\nMemAvailable:\s+([0-9]+)\s+kB', memory)
+        snapshot = cls(
+            time.time(),
+            memory_matched.group(1),
+            memory_matched.group(2))
         return snapshot
 
     def vars_to_array(self):

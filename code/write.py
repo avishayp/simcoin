@@ -14,9 +14,11 @@ class Writer:
 
     def append_csv(self, file_name, elements):
         with open(config.postprocessing_dir + file_name, 'a') as file:
-            logging.debug('Waiting for lock to write to file={}'.format(file_name))
+            logging.debug(
+                'Waiting for lock to write to file={}'.format(file_name))
             fcntl.flock(file, fcntl.LOCK_EX)
-            logging.debug('Received lock for writing to file={}'.format(file_name))
+            logging.debug(
+                'Received lock for writing to file={}'.format(file_name))
 
             w = csv.writer(file)
             for element in elements:

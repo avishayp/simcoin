@@ -22,7 +22,8 @@ class TestEvent(TestCase):
             'cmd1,cmd2,cmd3'
         ))
         m_file.return_value.__iter__ = lambda self: self
-        m_file.return_value.__next__ = lambda self: next(iter(self.readline, ''))
+        m_file.return_value.__next__ = lambda self: next(
+            iter(self.readline, ''))
 
         with patch('builtins.open', m_file):
             mock = MagicMock()
@@ -46,7 +47,8 @@ class TestEvent(TestCase):
             'cmd2'
         ))
         m_file.return_value.__iter__ = lambda self: self
-        m_file.return_value.__next__ = lambda self: next(iter(self.readline, ''))
+        m_file.return_value.__next__ = lambda self: next(
+            iter(self.readline, ''))
 
         with patch('builtins.open', m_file):
             mock = MagicMock()
@@ -68,7 +70,8 @@ class TestEvent(TestCase):
             'cmd1'
         ))
         m_file.return_value.__iter__ = lambda self: self
-        m_file.return_value.__next__ = lambda self: next(iter(self.readline, ''))
+        m_file.return_value.__next__ = lambda self: next(
+            iter(self.readline, ''))
 
         with patch('builtins.open', m_file):
             mock = MagicMock()
@@ -78,7 +81,9 @@ class TestEvent(TestCase):
             e._execute_cmd.side_effect = Exception('mock')
 
             e.execute()
-            self.assertRegex(m_error.call_args[0][0], 'Simulation could not .*')
+            self.assertRegex(
+                m_error.call_args[0][0],
+                'Simulation could not .*')
 
     def test_execute_cmd_with_block_cmd(self):
         node_1 = MagicMock()
@@ -123,7 +128,8 @@ class TestEvent(TestCase):
     def test_execute_cmd_with_exception(self):
         context = MagicMock()
         node = MagicMock()
-        node.generate_tx.side_effect = JSONRPCError({'code': -1, 'message': 'test_message'})
+        node.generate_tx.side_effect = JSONRPCError(
+            {'code': -1, 'message': 'test_message'})
         context.nodes = {'node-1': node}
 
         e = Event(context)

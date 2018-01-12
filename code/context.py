@@ -33,7 +33,6 @@ class Context:
                 [self.nodes[connection].ip for connection in connections[node.name]]
             )
 
-
     @property
     def run_name(self):
         return self._run_name

@@ -45,10 +45,7 @@ files_to_concat = [
 def _parse_args():
     parser = argparse.ArgumentParser()
 
-    parser.add_argument('--repeat'
-                        , default=2
-                        , type=checkargs.check_positive_int
-                        , help='Number of repetition of the simulation.'
+    parser.add_argument('--repeat', default=2, type=checkargs.check_positive_int, help='Number of repetition of the simulation.'
                         )
 
     args = parser.parse_known_args(sys.argv[2:])[0]
@@ -68,31 +65,40 @@ def run():
 
     for i in range(args.repeat):
         run_number = str(i + 1)
-        logging.info('Starting {}/{} simulation'.format(run_number, args.repeat))
+        logging.info(
+            'Starting {}/{} simulation'.format(run_number, args.repeat))
 
         utils.update_args(Namespace(tag_appendix='_' + run_number))
         simulation_cmd.run(unknown_arguments=True)
 
         bash.check_output('cp -r {}/postprocessing {}/run-{}'
                           .format(config.soft_link_to_run_dir, config.soft_link_to_multi_run_dir, run_number))
-        bash.check_output('cp {} {}/run-{}'.format(config.run_log, config.soft_link_to_multi_run_dir, run_number))
-        logging.info('Finished {}/{} simulation'.format(run_number, args.repeat))
+        bash.check_output('cp {} {}/run-{}'.format(config.run_log,
+                                                   config.soft_link_to_multi_run_dir, run_number))
+        logging.info(
+            'Finished {}/{} simulation'.format(run_number, args.repeat))
 
     for file in [config.args_csv, config.ticks_csv, config.analysed_ticks_csv,
                  config.general_infos_csv, config.nodes_csv, config.network_csv]:
-        bash.check_output('cp {} {}/.'.format(file, config.soft_link_to_multi_run_dir))
+        bash.check_output(
+            'cp {} {}/.'.format(file, config.soft_link_to_multi_run_dir))
     _concat_files()
 
     bash.check_output(rcmd.create_report(config.soft_link_to_multi_run_dir))
-    logging.info('Created report in folder={}'.format(config.soft_link_to_multi_run_dir))
+    logging.info(
+        'Created report in folder={}'.format(
+            config.soft_link_to_multi_run_dir))
 
 
 def _prepare():
     os.makedirs(config.multi_run_dir)
 
     if os.path.islink(config.soft_link_to_multi_run_dir):
-        bash.check_output('unlink {}'.format(config.soft_link_to_multi_run_dir))
-    bash.check_output('cd {}; ln -s {} {}'.format(config.data_dir, config.multi_run_dir_name, config.last_multi_run))
+        bash.check_output(
+            'unlink {}'.format(
+                config.soft_link_to_multi_run_dir))
+    bash.check_output('cd {}; ln -s {} {}'.format(config.data_dir,
+                                                  config.multi_run_dir_name, config.last_multi_run))
 
 
 def _concat_files():

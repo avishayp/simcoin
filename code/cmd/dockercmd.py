@@ -54,4 +54,5 @@ def inspect(image):
 
 
 def check_if_running(name):
-    return 'docker inspect -f {{{{.State.Running}}}} {0}{1}'.format(config.prefix, name)
+    return 'docker inspect -f {{{{.State.Running}}}} {0}{1}'.format(
+        config.prefix, name)

@@ -12,16 +12,10 @@ import logging
 def _create_parser():
     parser = argparse.ArgumentParser()
 
-    parser.add_argument('--seed'
-                        , default=0
-                        , type=checkargs.check_positive_int
-                        , help='Set the seed'
+    parser.add_argument('--seed', default=0, type=checkargs.check_positive_int, help='Set the seed'
                         )
 
-    parser.add_argument('--connectivity'
-                        , default=1
-                        , type=checkargs.check_percentage
-                        , help='Connectivity between nodes.'
+    parser.add_argument('--connectivity', default=1, type=checkargs.check_percentage, help='Connectivity between nodes.'
                         )
 
     return parser
@@ -48,7 +42,8 @@ def create(unknown_arguments=False):
     matrix = _create_matrix(header, args.connectivity)
 
     if _check_if_fully_connected(matrix) is not True:
-        raise Exception("Not all nodes a reachable. Consider to raise the connectivity.")
+        raise Exception(
+            "Not all nodes a reachable. Consider to raise the connectivity.")
 
     logging.info('Created {}:'.format(config.network_csv))
     print(pandas.DataFrame(matrix))

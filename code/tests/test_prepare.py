@@ -19,7 +19,8 @@ class TestPrepare(TestCase):
 
     @patch('node.wait_until_height_reached', lambda node, height: None)
     @patch('utils.sleep', lambda time: None)
-    @patch('prepare._calc_number_of_tx_chains', lambda txs_per_tick, block_per_tick, amount_of_nodes: 5)
+    @patch('prepare._calc_number_of_tx_chains',
+           lambda txs_per_tick, block_per_tick, amount_of_nodes: 5)
     def test_warmup_block_generation(self):
         node_0 = MagicMock()
         node_1 = MagicMock()
@@ -37,7 +38,8 @@ class TestPrepare(TestCase):
     @patch('os.makedirs')
     @patch('bash.check_output')
     @patch('builtins.open', new_callable=mock_open)
-    def test_prepare_simulation_dir(self, m_open, m_check_output, m_makedirs, m_islink, m_exists):
+    def test_prepare_simulation_dir(
+            self, m_open, m_check_output, m_makedirs, m_islink, m_exists):
         m_exists.return_value = False
         self.prepare._pool = MagicMock()
 
@@ -55,7 +57,8 @@ class TestPrepare(TestCase):
         self.assertEqual(m_check_output.call_count, 2)
 
     @patch('bash.check_output')
-    def test_remove_old_containers_if_exists_no_old_containers(self, m_check_output):
+    def test_remove_old_containers_if_exists_no_old_containers(
+            self, m_check_output):
         m_check_output.return_value = []
 
         prepare._remove_old_containers_if_exists()

@@ -42,8 +42,12 @@ class PostProcessing:
 
         _collect_general_information()
 
-        self._context.step_times.append(StepTimes(time.time(), 'postprocessing_end'))
-        self._writer.write_csv(config.step_times_csv_file_name, StepTimes.csv_header, self._context.step_times)
+        self._context.step_times.append(
+            StepTimes(time.time(), 'postprocessing_end'))
+        self._writer.write_csv(
+            config.step_times_csv_file_name,
+            StepTimes.csv_header,
+            self._context.step_times)
 
         _create_report()
 
@@ -60,7 +64,9 @@ class PostProcessing:
         bash.check_output(dockercmd.rm_network())
         logging.info('Deleted docker network')
 
-        bash.check_output(dockercmd.fix_data_dirs_permissions(self._context.run_dir))
+        bash.check_output(
+            dockercmd.fix_data_dirs_permissions(
+                self._context.run_dir))
         logging.info('Fixed permissions of dirs used by docker')
 
 
@@ -111,4 +117,6 @@ def _try_cmd(cmd):
 def _create_report():
     bash.check_output(rcmd.preprocess(config.postprocessing_dir))
     bash.check_output(rcmd.create_report(config.postprocessing_dir))
-    logging.info('Created report in folder={}'.format(config.postprocessing_dir))
+    logging.info(
+        'Created report in folder={}'.format(
+            config.postprocessing_dir))

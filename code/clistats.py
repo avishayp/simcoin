@@ -19,7 +19,8 @@ class CliStats:
         height = self._context.first_block_height
         nodes = self._context.nodes.values()
         consensus_chain = []
-        logging.info('Calculating consensus chain starting with height={}'.format(height))
+        logging.info(
+            'Calculating consensus chain starting with height={}'.format(height))
         while True:
             block_hashes = {}
             failing_nodes = []
@@ -45,7 +46,8 @@ class CliStats:
                 consensus_chain.append(block_hash)
                 height += 1
 
-                logging.info('Added block with hash={} to consensus chain'.format(block_hash))
+                logging.info(
+                    'Added block with hash={} to consensus chain'.format(block_hash))
 
         logging.info('Calculated {} block long consensus chain from {} nodes and until height={}'
                      .format(len(consensus_chain), len(nodes), height - 1))
@@ -54,7 +56,8 @@ class CliStats:
     def _persist_node_stats(self):
         tips = []
         for node in self._context.nodes.values():
-            tips.extend([Tip.from_dict(node.name, chain_tip) for chain_tip in node.execute_rpc('getchaintips')])
+            tips.extend([Tip.from_dict(node.name, chain_tip)
+                         for chain_tip in node.execute_rpc('getchaintips')])
 
         self._writer.write_csv(Tip.file_name, Tip.csv_header, tips)
         logging.info('Collected and persisted {} tips'.format(len(tips)))
