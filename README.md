@@ -23,7 +23,7 @@ When running a simulation, monitor the host machine closely. Check utilisation o
 * Use a better host machine! 😉
 
 ## Outlook/Possible improvements 🔮
-* Improving performance and stability by [using Unix domain sockets](https://github.com/bitcoin/bitcoin/pull/9979) for host to peer communication. 
+* Improving performance and stability by [using Unix domain sockets](https://github.com/bitcoin/bitcoin/pull/9979) for host to peer communication.
 * Sustaining different blockchain projects such as Ethereum or Litecoin.
 * Using the [ELK-Stack](https://www.elastic.co/products) to parse, store and analyse the log files.
 
@@ -34,20 +34,14 @@ Ground idea and initial development by Andreas Kern.
 
 &nbsp;
 
-<img src="https://github.com/simonmulser/simcoin/blob/master/graphics/sba_logo.jpg" alt="Image of SBA-Research logo" style="width: 236px;"/>
+<img src="https://media-exp2.licdn.com/mpr/mpr/shrink_200_200/AAEAAQAAAAAAAAP1AAAAJDFmMGI0OWVmLWFlNGUtNDY0Ny1iNzhmLTVlMjkyZTI1Y2I2ZQ.png" alt="Image of SBA-Research logo" style="width: 236px;"/>
 
 Developed in collaboration with Aljosha Judmayer and [SBA-Research](https://www.sba-research.org/) in the context of a thesis.
 
 &nbsp;
 
-<img src="https://github.com/simonmulser/simcoin/blob/master/graphics/netidee_logo_scholarship.jpg" alt="Image of netidee logo scholarship" style="width: 248px;"/>
+<img src="https://www.austrianstartups.com/wp-content/uploads/2014/06/netidee-1-627x200.png" alt="Image of netidee logo scholarship" style="width: 248px;"/>
 
 Additional outcome of a thesis sponsored by [Netidee](https://www.netidee.at/) Scholarship 12th Call, year 2017/2018.
 
 &nbsp;
-
-If you want to award my (Simon Mulser) efforts:
-
-BTC: 1JhcdkezyEWpYz9xit6YU9C4MMPYg8HujF  
-LTC: LYjmCsjVobaGg1p4ZDMDDcfKmn2dXz25r5  
-ETH: 0x00d40D0Cd0924282dedcb957cdaF32AC0038C5c1

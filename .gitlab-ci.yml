@@ -1,8 +1,0 @@
-before_script:
-  - python3 --version
-  - pip3 install -r code/requirements.txt
-
-unittest:
-  script:
-    - cd code
-    - python3 -m unittest discover -s tests
