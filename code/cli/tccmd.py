@@ -1,5 +1,5 @@
 import operator
-from cmd import dockercmd
+from cli import dockercmd
 
 #
 # for the 'tc' command 'iproute2' needs to be installed inside the container

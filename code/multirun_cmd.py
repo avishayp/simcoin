@@ -10,7 +10,7 @@ import simulation_cmd
 import os
 import config
 import bash
-from cmd import rcmd
+from cli import rcmd
 import parse
 import systemmonitor
 import clistats

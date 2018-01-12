@@ -3,8 +3,8 @@ from parse import Parser
 import config
 import bash
 import logging
-from cmd import rcmd
-from cmd import dockercmd
+from cli import rcmd
+from cli import dockercmd
 import utils
 from multiprocessing import Pool
 from multiprocessing.dummy import Pool as ThreadPool

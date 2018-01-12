@@ -36,7 +36,7 @@ jobs:
           name: enforce pep8
           command: |
             . /tmp/venv/bin/activate
-            tox
+            tox -e pep
 
       - save_cache:
           key: v1-tox-{{ checksum "code/requirements.txt" }}
@@ -49,9 +49,19 @@ jobs:
 
     steps:
 
+      - restore_cache:
+          key: v1-venv
+
+      - restore_cache:
+          key: v1-tox-{{ checksum "code/requirements.txt" }}
+
       - checkout
 
-      - run: echo TBD
+      - run:
+          name: unittest
+          command: |
+            . /tmp/venv/bin/activate
+            tox -e test
 
 
 workflows:

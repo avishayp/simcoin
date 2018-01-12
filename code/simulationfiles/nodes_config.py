@@ -4,7 +4,7 @@ import argparse
 import sys
 import utils
 import bash
-from cmd import dockercmd
+from cli import dockercmd
 import logging
 import csv
 from collections import namedtuple

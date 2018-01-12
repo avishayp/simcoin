@@ -1,5 +1,5 @@
 from unittest import TestCase
-from cmd import bitcoincmd
+from cli import bitcoincmd
 from mock import MagicMock
 import config
 

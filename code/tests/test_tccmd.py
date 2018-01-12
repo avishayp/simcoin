@@ -1,6 +1,6 @@
 from unittest import TestCase
 import ipaddress
-from cmd import tccmd
+from cli import tccmd
 from simulationfiles.zone import ZoneConfig
 
 

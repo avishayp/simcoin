@@ -1,9 +1,9 @@
-from cmd import dockercmd
-from cmd import bitcoincmd
+from cli import dockercmd
+from cli import bitcoincmd
 import config
 import bash
 import logging
-from cmd import tccmd
+from cli import tccmd
 import utils
 from collections import OrderedDict
 from collections import namedtuple
