@@ -1,26 +1,21 @@
-from unittest import TestCase
 import bash
 from mock import patch
 from mock import mock_open
 
 
-class TestBash(TestCase):
+@patch('subprocess.check_output')
+def test_check_output(mock):
+    mock.return_value = b'test\ntest\ttest\t\n\n'
 
-    def __init__(self, *args, **kwargs):
-        super(TestBash, self).__init__(*args, **kwargs)
+    output = bash.check_output('cmd')
 
-    @patch('subprocess.check_output')
-    def test_check_output(self, mock):
-        mock.return_value = b'test\ntest\ttest\t\n\n'
+    assert output == 'test\ntest\ttest'
 
-        output = bash.check_output('cmd')
 
-        self.assertEqual(output, 'test\ntest\ttest')
+@patch("builtins.open", mock_open())
+@patch('subprocess.call')
+def test_call_silent(mock):
+    mock.return_value = b'test'
+    output = bash.call_silent('cmd')
 
-    @patch("builtins.open", mock_open())
-    @patch('subprocess.call')
-    def test_call_silent(self, mock):
-        mock.return_value = b'test'
-        output = bash.call_silent('cmd')
-
-        self.assertTrue(str(output), 'test')
+    assert str(output, 'utf-8') == 'test'
