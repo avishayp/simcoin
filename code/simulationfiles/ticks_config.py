@@ -1,15 +1,13 @@
 import csv
 import random
+import itertools
 import pandas
-import numpy as np
 import config
 import argparse
 from simulationfiles import checkargs
 import sys
 import utils
 import logging
-
-np.set_printoptions(precision=2, suppress=True)
 
 
 def _create_parser():
@@ -47,7 +45,6 @@ def create(unknown_arguments=False):
     utils.update_args(args)
 
     random.seed(args.seed)
-    np.random.seed(args.seed)
 
     block_events = _create_block_events(
         nodes, args.amount_of_ticks, args.blocks_per_tick)
@@ -82,10 +79,8 @@ def _create_block_events(nodes, amount_of_ticks, blocks_per_tick):
 
 
 def _create_block_series(share, blocks_per_tick, expected_blocks):
-    random_event_ticks = np.random.exponential(
-        (1 / blocks_per_tick) * (1 / share), expected_blocks)
-    block_events = np.cumsum(random_event_ticks)
-    return block_events.tolist()
+    random_event_ticks = (random.expovariate((1 / blocks_per_tick) * (1 / share)) for _ in range(expected_blocks))
+    return list(itertools.accumulate(random_event_ticks))
 
 
 def _create_ticks(nodes, block_events, txs_per_tick, amount_of_ticks):
